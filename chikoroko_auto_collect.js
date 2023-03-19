@@ -2,7 +2,7 @@ let showNotification = false;
 let token = null;
 
 function surgeNotify(subtitle = '', message = '') {
-  $notification.post('Chikoroko 自動收集兔子', subtitle, message, {
+  $notification.post('Chikoroko 自動收集兔子v2', subtitle, message, {
     'url': ''
   });
 };
@@ -21,33 +21,38 @@ function handleError(error) {
   }
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function preCheck() {
   return new Promise((resolve, reject) => {
     const chikoCookie = $persistentStore.read('ChikoCookie');
-    const chikoCsrf = $persistentStore.read('ChikoCsrf');
     
     if (!chikoCookie || chikoCookie.length === 0) {
       return reject(['檢查失敗 ‼️', '找不到 cookie']);
     }
-    if (!chikoCsrf || chikoCsrf.length === 0) {
-      return reject(['檢查失敗 ‼️', '找不到 csrf']);
-    }
     cookie = chikoCookie;
-    csrf = chikoCsrf;
     return resolve();
   });
 }
 
-async function checkIn() {
+async function checkIn(id) {
   return new Promise((resolve, reject) => {
     try {
       const request = {
-        url: 'https://chikoroko.art/toy/add/',
+        url: 'https://chikoroko.art/api/v1/drops/earn',
         headers: {
           'cookie': cookie,
-          'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.2 Mobile/15E148 Safari/604.1'
+          'origin': 'https://chikoroko.art',
+          'referer': 'https://chikoroko.art/',
+          'content-type': 'application/json',
+          'Accept': '*/*',
+          'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'
         },
-        body: 'csrfmiddlewaretoken=' + csrf + '&pk=1603'
+        body: '{"id":' + id + '}',
       };
       $httpClient.post(request, function (error, response, data) {
         if (error) {
@@ -56,6 +61,11 @@ async function checkIn() {
           if (response.status === 200) {
             return resolve(response.status);
           } else {
+            const obj = JSON.parse(data);
+            if (obj.error.code >= 400) {
+              console.log(id + " " + obj.error.message);
+              return reject(['領取失敗 ‼️', '已領取或是查無該編號'])
+            }
             return reject(['領取失敗 ‼️', response.status]);
           }
         }
@@ -67,14 +77,15 @@ async function checkIn() {
 }
 
 (async () => {
-  console.log('ℹ️ Chikoroko 自動領兔子 v20230313.1');
+  console.log('ℹ️ Chikoroko 自動收集兔子v2 v20230319.1');
   try {
     await preCheck();
     console.log('✅ 檢查成功');
-    await checkIn();
+    let id = 66;
+    await checkIn(id);
     console.log('✅ 領取成功');
 
-    //surgeNotify('領取成功 ✅', '');
+    surgeNotify('領取成功 ✅', '');
   } catch (error) {
     handleError(error);
   }

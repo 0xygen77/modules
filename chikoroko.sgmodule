@@ -1,8 +1,8 @@
 #!name=Chikoroko 自動領兔子
-#!desc=使用此腳本前需要先取得 cookies，並且要通過 KYC，如果沒有 KYC 會有 captcha 的問題，每天更新 toy_id，就可以在凌晨四點自動收集。
+#!desc=使用此腳本前需要先取得 cookies，目前新網站沒有 captcha 問題，所以 KYC 非必要，每天輸入 id，就可以在凌晨四點自動收集。
 
 [Script]
-[Chikoroko] 自動收集兔子 = type=cron,cronexp="* 4 * * *",script-path=https://raw.githubusercontent.com/0xygen77/modules/main/chikoroko_auto_collect.js, wake-system=1, timeout=5
+[Chikoroko] 自動收集兔子 = type=cron,cronexp="*/5 4 * * *",script-path=https://raw.githubusercontent.com/0xygen77/modules/main/chikoroko_auto_collect.js, wake-system=1, timeout=5
 [Chikoroko] 自動取得 cookies = type=http-request,pattern=^https:\/\/chikoroko.art\/.*,script-path=https://raw.githubusercontent.com/0xygen77/modules/main/chikoroko_cookies.js, requires-body=0
 
 [MITM]
