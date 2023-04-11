@@ -1,0 +1,10 @@
+#!name=Layer3 自動 GM
+#!desc=使用此腳本前需要先取得 cookies，取得 cookies 的方法為瀏覽官網然後點進 Leaderboard 接著選 24 hr。
+
+[Script]
+[Layer3] 自動 GM = type=cron,cronexp="21 8 * * *",script-path=https://raw.githubusercontent.com/0xygen77/modules/main/layer3_gm.js, wake-system=1, timeout=5
+[Layer3] 更新 Token = type=cron,cronexp="20 8 * * *",script-path=https://raw.githubusercontent.com/0xygen77/modules/main/layer3_refresh_token.js, wake-system=1, timeout=5
+[Layer3] 取得 cookies = type=http-request,pattern=^https:\/\/layer3.xyz\/_next\/data\/\w*\/leaderboard\/daily.json,script-path=https://raw.githubusercontent.com/0xygen77/modules/main/layer3_cookies.js, requires-body=0
+
+[MITM]
+hostname = %APPEND% layer3.xyz
