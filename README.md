@@ -2,7 +2,7 @@
 
 ## Surge
 - [DOSI 簽到](https://raw.githubusercontent.com/0xygen77/modules/main/dosi.sgmodule)
-- SoQuest 簽到 (WIP)
+- [SoQuest 簽到](https://raw.githubusercontent.com/0xygen77/modules/main/soquest.sgmodule)
 - Layer3 GM (WIP)
 - ~~[Chikoroko 自動收集](https://raw.githubusercontent.com/0xygen77/modules/main/chikoroko.sgmodule)~~ :arrow_right: 已失效，官方會套 cloudflare
 - ~~Chikoroko KYC Bypass~~
