@@ -56,7 +56,7 @@ async function checkIn() {
         } else {
           if (response.status === 200) {
             const obj = JSON.parse(data);
-            return resolve(['GM 成功 ✅', obj]);
+            return resolve(['GM 成功 ✅', "已連續 GM " + obj[0].result.data.json + " 天 🔥"]);
           } else {
             const obj = JSON.parse(data);
             return reject(['GM 失敗 ‼️', obj[0].error.json.message])
@@ -70,7 +70,7 @@ async function checkIn() {
 }
 
 (async () => {
-  console.log('ℹ️ Layer3 自動 GM v20230314.1');
+  console.log('ℹ️ Layer3 自動 GM v20230412.1');
   try {
     await preCheck();
     console.log('✅ 檢查成功');
