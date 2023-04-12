@@ -54,11 +54,12 @@ async function checkIn() {
         if (error) {
           return reject(['GM 失敗 ‼️', '連線錯誤']);
         } else {
+          const obj = JSON.parse(data);
           if (response.status === 200) {
-            const obj = JSON.parse(data);
             return resolve(['GM 成功 ✅', "已連續 GM " + obj[0].result.data.json + " 天 🔥"]);
+          } else if (response.status === 401) {
+            return reject(['認證失敗 ‼️', "請重新拿取 cookies 或是手動 refresh token"])
           } else {
-            const obj = JSON.parse(data);
             return reject(['GM 失敗 ‼️', obj[0].error.json.message])
           }
         }
