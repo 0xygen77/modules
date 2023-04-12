@@ -60,8 +60,9 @@ async function checkIn() {
             const obj = JSON.parse(data);
             if (obj.message === 'Signed in today') {
               return reject(['簽到失敗 ‼️', '今日已經簽到'])
-            }
-            else {
+            } else if (obj.message === 'Please login') {
+              return reject(['簽到失敗 ‼️', '請重新拿取 signature'])
+            } else {
               return resolve(['簽到成功 ✅', obj]);
             }
           } else {
