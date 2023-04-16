@@ -63,6 +63,7 @@ async function checkIn() {
             } else if (obj.message === 'Please login') {
               return reject(['簽到失敗 ‼️', '請重新拿取 signature'])
             } else {
+              console.log(obj);
               return resolve(['簽到成功 ✅', obj]);
             }
           } else {
@@ -81,7 +82,7 @@ async function checkIn() {
   try {
     await preCheck();
     console.log('✅ 檢查成功');
-    await checkIn();
+    const result = await checkIn();
     console.log('✅ 簽到成功');
 
     surgeNotify('簽到成功 ✅', '');

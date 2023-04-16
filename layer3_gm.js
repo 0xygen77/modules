@@ -77,7 +77,7 @@ async function checkIn() {
   try {
     await preCheck();
     console.log('✅ 檢查成功');
-    await checkIn();
+    const result = await checkIn();
     console.log('✅ GM 成功');
     console.log(`ℹ️ 目前已連續 GM ${result.gmDays} 天`);
     surgeNotify(
