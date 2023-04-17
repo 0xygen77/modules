@@ -58,13 +58,14 @@ async function checkIn() {
         } else {
           if (response.status === 200) {
             const obj = JSON.parse(data);
-            console.log(`Response Data: ${obj}`);
+            console.log(`Response Data: ${JSON.stringify(obj)}`);
             if (obj.message === 'Signed in today') {
               return reject(['簽到失敗 ‼️', '今日已經簽到'])
             } else if (obj.message === 'Please login') {
               return reject(['簽到失敗 ‼️', '請重新拿取 signature'])
             } else if (obj.message === 'OK') {
               const checkInScore = obj.data.score;
+              console.log(`Check In Score: ${checkInScore}`);
               return resolve(checkInScore);
             } else {
               return reject(['簽到失敗 ‼️', obj])
@@ -81,7 +82,7 @@ async function checkIn() {
 }
 
 (async () => {
-  console.log('ℹ️ SoQuest 自動簽到 v20230417.1');
+  console.log('ℹ️ SoQuest 自動簽到 v20230417.2');
   try {
     await preCheck();
     console.log('✅ 檢查成功');
