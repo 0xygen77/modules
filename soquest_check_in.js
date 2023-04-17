@@ -58,13 +58,16 @@ async function checkIn() {
         } else {
           if (response.status === 200) {
             const obj = JSON.parse(data);
+            console.log(`Response Data: ${obj}`);
             if (obj.message === 'Signed in today') {
               return reject(['簽到失敗 ‼️', '今日已經簽到'])
             } else if (obj.message === 'Please login') {
               return reject(['簽到失敗 ‼️', '請重新拿取 signature'])
+            } else if (obj.message === 'OK') {
+              const checkInScore = obj.data.score;
+              return resolve(checkInScore);
             } else {
-              console.log(obj);
-              return resolve(['簽到成功 ✅', obj]);
+              return reject(['簽到失敗 ‼️', obj])
             }
           } else {
             return reject(['簽到失敗 ‼️', response.status]);
@@ -78,14 +81,18 @@ async function checkIn() {
 }
 
 (async () => {
-  console.log('ℹ️ SoQuest 自動簽到 v20230411.1');
+  console.log('ℹ️ SoQuest 自動簽到 v20230417.1');
   try {
     await preCheck();
     console.log('✅ 檢查成功');
     const result = await checkIn();
     console.log('✅ 簽到成功');
-
-    surgeNotify('簽到成功 ✅', '');
+    console.log(`ℹ️ 獲得 👉 ${result} 積分 💎`);
+    
+    surgeNotify(
+      '領取成功 ✅',
+      `獲得 👉 ${result} 積分 💎`
+    );
   } catch (error) {
     handleError(error);
   }
