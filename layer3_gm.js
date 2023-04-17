@@ -56,9 +56,9 @@ async function checkIn() {
         } else {
           const obj = JSON.parse(data);
           if (response.status === 200) {
-            return resolve({
-                gmDays: obj[0].result.data.json
-            });
+            const gmDays = obj[0].result.data.json;
+            console.log(`gmDays: ${gmDays}`);
+            return resolve(gmDays);
           } else if (response.status === 401) {
             return reject(['認證失敗 ‼️', "請重新拿取 cookies 或是手動 refresh token"])
           } else {
@@ -79,9 +79,9 @@ async function checkIn() {
     console.log('✅ 檢查成功');
     const result = await checkIn();
     console.log('✅ GM 成功');
-    console.log(`ℹ️ 目前已連續 GM ${result.gmDays} 天`);
+    console.log(`ℹ️ 目前已連續 GM ${result} 天`);
     surgeNotify(
-      `GM 成功，目前已連續 GM ${result.gmDays} 天`
+      `GM 成功，目前已連續 GM ${result} 天`
     );
   } catch (error) {
     handleError(error);
