@@ -55,9 +55,10 @@ async function checkIn() {
           return reject(['GM 失敗 ‼️', '連線錯誤']);
         } else {
           const obj = JSON.parse(data);
+          console.log(`Response Data: ${JSON.stringify(obj)}`);
           if (response.status === 200) {
             const gmDays = obj[0].result.data.json;
-            console.log(`gmDays: ${gmDays}`);
+            console.log(`GM Days: ${gmDays}`);
             return resolve(gmDays);
           } else if (response.status === 401) {
             return reject(['認證失敗 ‼️', "請重新拿取 cookies 或是手動 refresh token"])
@@ -73,13 +74,14 @@ async function checkIn() {
 }
 
 (async () => {
-  console.log('ℹ️ Layer3 自動 GM v20230412.1');
+  console.log('ℹ️ Layer3 自動 GM v20230417.2');
   try {
     await preCheck();
     console.log('✅ 檢查成功');
     const result = await checkIn();
     console.log('✅ GM 成功');
     console.log(`ℹ️ 目前已連續 GM ${result} 天`);
+    
     surgeNotify(
       `GM 成功，目前已連續 GM ${result} 天`
     );
