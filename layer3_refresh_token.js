@@ -54,6 +54,7 @@ async function checkIn() {
         } else {
           if (response.status === 200) {
             const obj = JSON.parse(data);
+            console.log(`Response Data: ${JSON.stringify(obj)}`);
             const saveAccess = $persistentStore.write(obj.accessToken, 'Layer3AccessToken');
             if (saveAccess) {
               return resolve(['Refresh Token 保存成功 ✅']);
@@ -62,6 +63,7 @@ async function checkIn() {
             }
           } else {
             const obj = JSON.parse(data);
+            console.log(`Response Data: ${JSON.stringify(obj)}`);
             return reject(['Token refresh 失敗 ‼️', obj])
           }
         }
