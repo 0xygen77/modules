@@ -73,18 +73,54 @@ async function checkIn() {
   });
 }
 
+async function getBalance() {
+  return new Promise((resolve, reject) => {
+    try {
+      const request = {
+        url: 'https://citizen.dosi.world/api/citizen/v1/balance',
+        headers: {
+          'cookie': cookie,
+          'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.2 Mobile/15E148 Safari/604.1',
+        },
+      };
+      $httpClient.get(request, function (error, response, data) {
+        if (error) {
+          return reject(['DON 餘額查詢失敗 ‼️', '連線錯誤']);
+        } else {
+          if (response.status === 200) {
+            const obj = JSON.parse(data);
+            console.log(`Response Data: ${JSON.stringify(obj)}`);
+            const donAmount = obj.amount;
+            return resolve(donAmount);
+          } else {
+            const obj = JSON.parse(data);
+            console.log(`Response Data: ${JSON.stringify(obj)}`);
+            return reject(['DON 餘額查詢失敗 ‼️', response.status]);
+          }
+        }
+      });
+    } catch (error) {
+      return reject(['DON 餘額查詢失敗 ‼️', error]);
+    }
+  });
+}
+
 (async () => {
-  console.log('ℹ️ DOSI 自動簽到 v20230314.1');
+  console.log('ℹ️ DOSI 自動簽到 v20230418.2');
   try {
     await preCheck();
     console.log('✅ 檢查成功');
     const reward = await checkIn();
     console.log('✅ 簽到成功');
     console.log('ℹ️ 獲得 👉 ${reward} 💎');
+    
+    const balance = await getBalance();
+    console.log('✅ DON 餘額查詢成功');
+    console.log('ℹ️ 餘額 👉 ${reward} 💰💰💰');
 
     surgeNotify(
       '簽到成功 ✅',
-      `獲得 👉 ${reward} DON 💎`
+      `獲得 👉 ${reward} DON，目前總共有 ${balance} DON`
     );
   } catch (error) {
     handleError(error);
