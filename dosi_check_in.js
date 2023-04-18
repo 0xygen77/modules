@@ -50,12 +50,15 @@ async function checkIn() {
         } else {
           if (response.status === 200) {
             const obj = JSON.parse(data);
+            console.log(`Response Data: ${JSON.stringify(obj)}`);
             if (obj.success === true) {
-              return resolve(['簽到成功 ✅', obj.totalAmount]);
+              const totalAmount = obj.totalAmount;
+              return resolve(totalAmount);
             }
           }
           if (response.status === 500) {
             const obj = JSON.parse(data);
+            console.log(`Response Data: ${JSON.stringify(obj)}`);
             if (obj.statusMessage === 'Fail to register check-in event due to check-in is already processed.') {
               return reject(['簽到失敗 ‼️', '今日已經簽到'])
             }
@@ -75,10 +78,14 @@ async function checkIn() {
   try {
     await preCheck();
     console.log('✅ 檢查成功');
-    await checkIn();
+    const reward = await checkIn();
     console.log('✅ 簽到成功');
+    console.log('ℹ️ 獲得 👉 ${reward} 💎');
 
-    surgeNotify('簽到成功 ✅', '');
+    surgeNotify(
+      '簽到成功 ✅',
+      `獲得 👉 ${reward} DON 💎`
+    );
   } catch (error) {
     handleError(error);
   }
