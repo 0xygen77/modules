@@ -45,8 +45,9 @@ async function checkIn() {
         url: 'https://layer3.xyz/api/trpc/gm.addGm?batch=1',
         headers: {
           'cookie': cookie,
-          'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
+          'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
           'content-type': 'application/json',
+          'referer': 'https://layer3.xyz/quests'
         },
         body: '{"0":{"json":{"timezoneOffset":-480,"markXpActivityAsSeen":true}}}',
       };
@@ -57,7 +58,7 @@ async function checkIn() {
           const obj = JSON.parse(data);
           console.log(`Response Data: ${JSON.stringify(obj)}`);
           if (response.status === 200) {
-            const gmDays = obj[0].result.data.json;
+            const gmDays = obj[0].result.data.json.newStreak;
             console.log(`GM Days: ${gmDays}`);
             return resolve(gmDays);
           } else if (response.status === 401) {
@@ -74,7 +75,7 @@ async function checkIn() {
 }
 
 (async () => {
-  console.log('ℹ️ Layer3 自動 GM v20230417.2');
+  console.log('ℹ️ Layer3 自動 GM v20230924.1');
   try {
     await preCheck();
     console.log('✅ 檢查成功');
