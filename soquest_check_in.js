@@ -34,9 +34,30 @@ async function preCheck() {
     if (!soquestAddress || soquestAddress.length === 0) {
       return reject(['檢查失敗 ‼️', '找不到 SoQuest Address']);
     }
+    
+    const soquestTime = $persistentStore.read('SoQuestTime');
+    
+    if (!soquestTime || soquestTime.length === 0) {
+      return reject(['檢查失敗 ‼️', '找不到 SoQuest Time']);
+    }
+    
+    const soquestSign = $persistentStore.read('SoQuestSign');
+    
+    if (!soquestSign || soquestSign.length === 0) {
+      return reject(['檢查失敗 ‼️', '找不到 SoQuest Sign']);
+    }
+    
+    const soquestApikey = $persistentStore.read('SoQuestApikey');
+    
+    if (!soquestApikey || soquestApikey.length === 0) {
+      return reject(['檢查失敗 ‼️', '找不到 SoQuest Apikey']);
+    }
 
     signature = soquestSignature;
     address = soquestAddress;
+    time = soquestTime;
+    sign = soquestSign;
+    api = soquestApikey;
     return resolve();
   });
 }
@@ -49,7 +70,10 @@ async function checkIn() {
         headers: {
           'address': address,
           'signature': signature,
-          'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
+          'apikey': api,
+          'sign': sign,
+          'time': time,
+          'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0',
         },
       };
       $httpClient.post(request, function (error, response, data) {
@@ -82,7 +106,7 @@ async function checkIn() {
 }
 
 (async () => {
-  console.log('ℹ️ SoQuest 自動簽到 v20230417.2');
+  console.log('ℹ️ SoQuest 自動簽到 v20231125.1');
   try {
     await preCheck();
     console.log('✅ 檢查成功');
