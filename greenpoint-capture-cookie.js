@@ -22,6 +22,11 @@ if (cookie && cookie.indexOf("UUID=") !== -1 && cookie.indexOf("greenpointUUID="
     $persistentStore.write(cookie, "greenpoint_cookie");
     $persistentStore.write(new Date().toString(), "greenpoint_cookie_updated_at");
     console.log("[GreenPoint] Cookie 已更新: " + cookie);
+    $notification.post(
+      "GreenPoint Cookie 已更新 🍪",
+      old ? "偵測到新的 Cookie,已覆蓋舊值" : "首次擷取成功,簽到腳本現在可以使用",
+      new Date().toLocaleString()
+    );
   }
 }
 
