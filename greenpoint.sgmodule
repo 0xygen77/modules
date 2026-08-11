@@ -1,5 +1,5 @@
 #!name = GreenPoint 自動簽到
-#!desc = 自動擷取 Cookie 並每日定時簽到 GreenPoint 綠色點數平台
+#!desc = 自動擷取 Cookie 並每日定時簽到 GreenPoint 綠色點數平台 v20260811.1
 
 [Script]
 # 攔截你平常使用 App/網站時的請求,自動把最新 Cookie 存起來
