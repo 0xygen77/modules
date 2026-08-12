@@ -1,12 +1,8 @@
-#!name = GreenPoint 自動簽到
-#!desc = 自動擷取 Cookie 並每日定時簽到 GreenPoint 綠色點數平台 v20260811.1
+#!name = GreenPoint 自動簽到 v20260812.1
+#!desc = 每次執行都自動重新登入取得新 Cookie,並每日定時簽到 GreenPoint 綠色點數平台
+#!arguments=system_id
+#!arguments-desc=需要先 MITM 過一次看自己的 system_id
 
 [Script]
-# 攔截你平常使用 App/網站時的請求,自動把最新 Cookie 存起來
-greenpoint-capture = type=http-request, pattern=^https?:\/\/sys\.greenpoint\.org\.tw\/GpConsumerApp\/, script-path=https://raw.githubusercontent.com/0xygen77/modules/main/greenpoint-capture-cookie.js, requires-body=false, timeout=10, tag=GreenPoint擷取Cookie
-
-# 每天早上 9:00 自動簽到,可自行調整 cronexp
-greenpoint-signin = type=cron, cronexp="0 9 * * *", script-path=https://raw.githubusercontent.com/0xygen77/modules/main/greenpoint-signin.js, timeout=30, tag=GreenPoint簽到
-
-[MITM]
-hostname = %APPEND% sys.greenpoint.org.tw
+# 每天早上 9:00 自動「重新登入 + 簽到」,可自行調整 cronexp
+greenpoint-signin = type=cron, cronexp="0 9 * * *", script-path=https://raw.githubusercontent.com/0xygen77/modules/main/greenpoint-signin.js, argument={{{system_id}}}, timeout=30, tag=GreenPoint簽到
